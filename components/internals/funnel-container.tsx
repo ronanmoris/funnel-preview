@@ -33,11 +33,11 @@ export default function FunnelContainer({ data }: FunnelContainerProps) {
   };
 
   const handleNextPage = () => {
-    setPage((page) => page > 0 ? page - 1 : 0)
+    setPage((page) => page < jsonData.pages.length - 1 ? page + 1 : page)
   }
 
   const handlePrevPage = () => {
-    setPage((page) => page < jsonData.pages.length - 1 ? page + 1 : page)
+    setPage((page) => page > 0 ? page - 1 : 0)
   }
 
   return (
@@ -49,10 +49,10 @@ export default function FunnelContainer({ data }: FunnelContainerProps) {
         </div>
 
         <div>
-          <Button variant="outline" size="sm" aria-label="previous-page" onClick={handleNextPage}>
+          <Button variant="outline" size="sm" aria-label="previous-page" onClick={handlePrevPage}>
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <Button className="ml-2" variant="outline" size="sm" aria-label='next-page' onClick={handlePrevPage}>
+          <Button className="ml-2" variant="outline" size="sm" aria-label='next-page' onClick={handleNextPage}>
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
