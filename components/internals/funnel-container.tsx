@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
 interface FunnelContainerProps {
   data: FunnelData
@@ -13,7 +14,11 @@ interface FunnelContainerProps {
 
 export default function FunnelContainer({ data }: FunnelContainerProps) {
   const [jsonData, setJsonData] = useState(data);
-  const [page, setPage] = useState(0)
+
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+  let page = Number(searchParams.get('page')) ?? 1
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return
@@ -22,7 +27,7 @@ export default function FunnelContainer({ data }: FunnelContainerProps) {
     const reader = new FileReader();
 
     reader.onload = (event) => {
-      if (!event.target?.result) return
+      if (!event.target?.result) return 
 
       const fileContent = event.target.result;
       const parsedData = JSON.parse(fileContent as string);
@@ -33,11 +38,29 @@ export default function FunnelContainer({ data }: FunnelContainerProps) {
   };
 
   const handleNextPage = () => {
-    setPage((page) => page < jsonData.pages.length - 1 ? page + 1 : page)
+    let nextPage
+
+    if (page && page < jsonData.pages.length - 1) {
+      nextPage = page + 1
+    } else {
+      nextPage = 1
+    }
+    const params = new URLSearchParams(searchParams);
+    params.set('page', String(nextPage))
+    replace(`${pathname}?${params}`);
   }
 
   const handlePrevPage = () => {
-    setPage((page) => page > 0 ? page - 1 : 0)
+    let prevPage
+    
+    if (page && page > 0) {
+      prevPage = page - 1
+    } else {
+      prevPage = page
+    }
+    const params = new URLSearchParams(searchParams);
+    params.set('page', String(prevPage))
+    replace(`${pathname}?${params}`);
   }
 
   return (
@@ -49,10 +72,10 @@ export default function FunnelContainer({ data }: FunnelContainerProps) {
         </div>
 
         <div>
-          <Button variant="outline" size="sm" aria-label="previous-page" onClick={handlePrevPage}>
+          <Button variant="outline" size="sm" aria-label="previous-page" onClick={handlePrevPage} disabled={page === 0}>
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <Button className="ml-2" variant="outline" size="sm" aria-label='next-page' onClick={handleNextPage}>
+          <Button className="ml-2" variant="outline" size="sm" aria-label='next-page' onClick={handleNextPage} disabled={page === jsonData.pages.length - 1}>
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
