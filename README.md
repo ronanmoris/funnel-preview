@@ -41,5 +41,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 - I would use React Testing Library. Make sure the tests resemble how the user interacts with the page, also enforcing some good practices for accessibility.
 
 ### Next features
-- I would use url state management to control the page the user is currently seeing. This would allow the users to refresh the page and still see the page they were at before but also be able to send the url to someone   implement the pages control as a url state. Doing so, the user would be able to copy the url at a given page and send it to someone and 
+- I would use url state management to control the page the user is currently seeing. This would allow the users to refresh the page and still see the page they were at before but also be able to send the url to someone   implement the pages control as a url state. Doing so, the user would be able to copy the url at a given page and send it to someone and
+- Add proper linting
 - I would use url state management to control the page the user is currently seeing. This would allow users to refresh the page and still see the page they were at before and also to be able to send the url to someone at the exact page they want to show.
+- Add drag and drop to upload files
