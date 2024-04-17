@@ -2,6 +2,7 @@ import Image from "next/image";
 import { promises as fs } from 'fs';
 import Link from "next/link";
 import FunnelContainer from "@/components/internals/funnel-container";
+import { Suspense } from 'react'
 
 export default async function Home() {
   const file = await fs.readFile(process.cwd() + '/app/data.json', 'utf8');
@@ -14,7 +15,9 @@ export default async function Home() {
           <Image src='https://perspective.imgix.net/assets/app/logo/256x256.png?auto=compress&dpr=2' alt='Perspective Logo' width={32} height={32} />
         </Link>
       </header>
-      <FunnelContainer data={data} />
+      <Suspense>
+        <FunnelContainer data={data} />
+      </Suspense>
     </div>
   );
 }
